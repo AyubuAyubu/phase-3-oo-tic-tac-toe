@@ -1,40 +1,40 @@
+
 class TicTacToe
-    attr_accessor :game_board
+    attr_accessor :board
 
     WIN_COMBINATIONS =  [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [6,4,2]]
 
     def initialize
-        @game_board = [" "," "," "," "," "," "," "," "," "]
+        @board = [" "," "," "," "," "," "," "," "," "]
     end
 
-    # HELPER METHODS
     def display_board
-        puts " #{@game_board[0]} | #{@game_board[1]} | #{@game_board[2]} "
+        puts " #{@board[0]} | #{@board[1]} | #{@board[2]} "
         # Failure/Error: expect(output).to include("-----------") when i output just  ==> puts ""
-        puts "-------------------"
-        puts " #{@game_board[3]} | #{@game_board[4]} | #{@game_board[5]} "
-        puts "-------------------"
-        puts " #{@game_board[6]} | #{@game_board[7]} | #{@game_board[8]} "
+        puts "-----------"
+        puts " #{@board[3]} | #{@board[4]} | #{@board[5]} "
+        puts "-----------"
+        puts " #{@board[6]} | #{@board[7]} | #{@board[8]} "
     end
 
-    def input_to_index(number_str)
-        number_str.to_i - 1
+    def input_to_index(num_str)
+        num_str.to_i - 1
     end
 
-    def move(index_position, token = "X")
-        @game_board[index_position] = token
+    def move(index, token = "X")
+        @board[index] = token
     end
 
-    def position_taken?(index_position)
-        @game_board[index_position] != " "
+    def position_taken?(index)
+        @board[index] != " "
     end
 
-    def valid_move?(index_position)
-       index_position.between?(0, 8) && !position_taken?(index_position)
+    def valid_move?(index)
+        index.between?(0, 8) && !position_taken?(index)
     end
 
     def turn_count
-        @game_board.count{|square| square != " "} 
+        @board.count{|square| square != " "} 
     end
 
     def current_player
@@ -44,10 +44,10 @@ class TicTacToe
     def turn
         puts "Please enter a number (1-9):"
         user_input = gets.strip
-        index_positon = input_to_index(user_input)
-        if valid_move?(index_position)
+        index = input_to_index(user_input)
+        if valid_move?(index)
             token = current_player
-            move(index_position, token)
+            move(index, token)
         else
             turn
         end
@@ -56,9 +56,7 @@ class TicTacToe
 
     def won?
         WIN_COMBINATIONS.any? do |combo|
-            if position_taken?(combo[0]) &&
-                 @board[combo[0]] == @board[combo[1]] &&
-                  @board[combo[1]] == @board[combo[2]]
+            if position_taken?(combo[0]) && @board[combo[0]] == @board[combo[1]] && @board[combo[1]] == @board[combo[2]]
                 return combo
             end
         end
